@@ -1,42 +1,43 @@
-from turtle import Turtle,Screen
-from buttonkey import Button
-from ball import Ball
 import time
+from turtle import Screen
+from snake import Snake
+from food import Food
 from score import Score
+
 screen = Screen()
+screen.setup(width=500, height=500)
 screen.bgcolor("black")
-screen.setup(width=800,height=600)
-screen.title("PONG GAME")
+screen.title("Snake Game")
 screen.tracer(0)
+
+snake = Snake()
+food = Food()
+score1 = Score()
 screen.listen()
-score=Score()
-r_button=Button((370,0))
-l_button=Button((-370,0))
-ball=Ball()
-screen.onkey(r_button.upkey, "Up")
-screen.onkey(r_button.downkey, "Down")
-screen.onkey(l_button.upkey, "a")
-screen.onkey(l_button.downkey, "z")
-move_speed=0.09
-game=True
+screen.onkey(snake.up, "Up")
+screen.onkey(snake.down, "Down")
+screen.onkey(snake.right, "Right")
+screen.onkey(snake.left, "Left")
+
+game = True
 while game:
-    time.sleep( move_speed)
     screen.update()
-    ball.move()
+    time.sleep(0.1)
+    snake.move()
+    if snake.head.distance(food) < 15:
+        food.refresh()
+        snake.extend()
+        score1.checking()
+    if snake.head.xcor() > 240 or snake.head.xcor() < -240 or snake.head.ycor() > 240 or snake.head.ycor() < -240:
+        # game = False
+        # score1.game_over()
+        snake.reverse()
 
-    if ball.ycor()>280 or ball.ycor()<-280:
-        ball.bounce_y()
+    for segment in snake.segment:
+        if segment == snake.head:
+            pass
+        elif snake.head.distance(segment) < 10:
+            game = False
+            score1.game_over()
 
-    if ball.distance(r_button)<50 and ball.xcor()>350 or (ball.distance(l_button)<50 and ball.xcor()<-350):
-        move_speed *=0.9
-        print(move_speed)
-        ball.bounce_x()
-
-    if ball.xcor()>370:
-        ball.reverse()
-        score.left_score()
-
-    if ball.xcor()<-370:
-        ball.reverse()
-        score.right_score()
 screen.exitonclick()

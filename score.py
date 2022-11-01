@@ -1,27 +1,20 @@
 from turtle import Turtle
+
+
 class Score(Turtle):
     def __init__(self):
         super().__init__()
+        self.score = 0
         self.hideturtle()
+        self.goto(0, 225)
         self.color("white")
-        self.penup()
-        self.r_score = 0
-        self.l_score = 0
-        self.scoreboard()
-    def scoreboard(self):
+        self.write(arg=f"Score: {self.score}", move=False, align="center", font=("arial", 15, "bold"))
+
+    def game_over(self):
+        self.goto(0, 0)
+        self.write("GAME OVER", move=False, align="center", font=("arial", 15, "bold"))
+
+    def checking(self):
+        self.score += 1
         self.clear()
-        self.goto(100, 200)
-        self.write(self.r_score, False, "center", ("arial", 50, "bold"))
-        self.goto(-100, 200)
-        self.write(self.l_score, False, "center", ("arial", 50, "bold"))
-    def right_score(self):
-
-        self.r_score += 1
-        self.scoreboard()
-
-    def left_score(self):
-
-        self.l_score += 1
-        self.scoreboard()
-
-
+        self.write(arg=f"Score: {self.score}", move=False, align="center", font=("arial", 15, "bold"))
